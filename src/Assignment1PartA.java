@@ -1,15 +1,22 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Name: Ryan Xu
+ * Date: February 12th, 2025
+ * Description:
+ *  Terminal app to sell Pokémon cards
+ */
 class Card {
     public String name;
     public String type;
     public double cost;
-    public Card(String name, String type, double cost) {
+    public Card(String name, String type, double cost) { // constructor
         this.name = name;
         this.type = type;
         this.cost = cost;
     }
+    // utility methods
     public String getName() {
         return name;
     }
@@ -22,77 +29,107 @@ class Card {
 }
 
 public class Assignment1PartA {
-
+    /**
+     * method to grab the card name
+     * @param s passing scanner
+     * @param numCards number of cards
+     * @return valid string for the name of the card
+     */
+    public static String getName(Scanner s, int numCards) {
+        System.out.printf("Please enter the name of card #%d: ", numCards);
+        String name = s.nextLine();
+        if(name.isBlank()) { //invalid name
+            System.out.println("\tINVALID! ");
+            return getName(s, numCards);
+        } else { //valid name
+            return name;
+        }
+    }
+    /**
+     * method to grab the card type
+     * @param s passing scanner
+     * @return valid type as a string
+     */
     public static String getType(Scanner s) {
-        Set<String> types = new HashSet<>(Set.of("grass", "fire","water", "poison", "fairy", "psychic", "ghost", "dark", "other"));
+        System.out.print("Please enter the energy type of the Pokemon: ");
+        Set<String> types = new HashSet<>(Set.of("grass", "fire","water", "poison", "fairy", "psychic", "ghost", "dark", "other")); // all valid card types
         String type = s.nextLine();
-        if (types.contains(type.toLowerCase().strip())) {
-            return type;
-        } else {
-            System.out.print("\tINVALID. Please enter the energy type of the Pokemon: ");
+        if (types.contains(type.toLowerCase().strip())) { // input is a valid type
+            return type.strip(); //strip for later formatting on the output file
+        } else { // invalid input try again
+            System.out.print("\tINVALID. ");
             return getType(s);
         }
     }
 
+    /**
+     * method to grab the cost of the cards
+     * @param s scanner
+     * @return valid non-negative cost of the card as a double
+     */
     public static double getCost(Scanner s) {
-        if(s.hasNextDouble()) {
+        System.out.print("Please enter the amount for this card: $");
+        if(s.hasNextDouble()) { // user inputted a double
             double cost = s.nextDouble();
             s.nextLine();
-            if(cost>=0) {
+            if(cost>=0) { // valid input
                 return cost;
-            } else {
-                System.out.print("\tINVALID. Please enter the amount for this card: $");
-                s.next();
+            } else { // user's cost is negative
+                System.out.print("\tINVALID. ");
                 return getCost(s);
             }
-        } else {
-            System.out.print("\tINVALID. Please enter the amount for this card: $");
-            s.next();
+        } else { // any input that isn't a double
+            System.out.print("\tINVALID. ");
+            s.next(); // read invalid input
             return getCost(s);
         }
     }
 
+    /**
+     * method to grab the users response to (y/n) choice
+     * @param s passing scanner
+     * @param prompt original prompt of the question
+     * @return boolean indicating user's choice
+     */
     public static boolean getChoice(Scanner s, String prompt) {
+        System.out.print(prompt);
         String choice = s.nextLine();
-        if(choice.equals("y") || choice.equals("Y")) {
+        if(choice.equals("y") || choice.equals("Y")) { // user indicated yes
             return true;
-        } else if(choice.equals("n") || choice.equals("N")) {
+        } else if(choice.equals("n") || choice.equals("N")) { // user indicated no
             return false;
-        } else {
-            System.out.println(choice);
-            System.out.printf("\tINVALID! %s", prompt);
+        } else { // invalid input
+            System.out.print("\tINVALID! ");
             return getChoice(s, prompt);
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //main method
+        //variable initialization
         Scanner s  = new Scanner(System.in);
-        System.out.println("Bye Bye My Pokemon Cards\n");
-        ArrayList<Card> wongCards = new ArrayList<>();
-
-        boolean on = true;
-        int cards = 0;
-        int cnt = 0;
+        ArrayList<Card> wongCards = new ArrayList<>(); // container to store cards that Ms.Wong bought
+        int leftoverCards = 0;
+        int numCards = 0;
         double leftoverCardCost = 0;
-        double maxCost = 0;
+        double highestCost = 0;
+        double totalCost = 0;
         String mostExpensiveName = null;
+        boolean on = true; // boolean for program state
+
+        System.out.println("Bye Bye My Pokemon Cards\n");
         while(on) {
-            System.out.printf("Please enter the name of card #%d: ", ++cnt);
-            String name = s.nextLine();
-            System.out.print("Please enter the energy type of the Pokemon: ");
+            //grab the variables
+            String name = getName(s, ++numCards);
             String type = getType(s);
-            System.out.print("Please enter the amount for this card: $");
             double cost = getCost(s);
-            System.out.printf("Will Ms. Wong buy this $%.2f card? (y/n): ", cost);
-            if(getChoice(s, String.format("Will Ms. Wong buy this $%.2f card? (y/n): ", cost))) {
+            if(getChoice(s, String.format("Will Ms. Wong buy this $%.2f card? (y/n): ", cost))) { //wong is buying store in arrayList
                 wongCards.add(new Card(name, type, cost));
-            } else {
-                cards++;
+            } else { //wong not buying, add to total cost, store largest cost.
+                leftoverCards++;
                 leftoverCardCost+=cost;
-                maxCost = Math.max(maxCost, cost);
-                mostExpensiveName = (maxCost==cost ? name : mostExpensiveName);
+                highestCost = Math.max(highestCost, cost);
+                mostExpensiveName = (highestCost==cost ? name : mostExpensiveName);
             }
-            System.out.print("Are you selling anymore cards? (y/n): ");
             on=getChoice(s, "Are you selling anymore cards? (y/n): ");
         }
 
@@ -103,16 +140,15 @@ public class Assignment1PartA {
             w.println("Summary of Ms.Wong's purchases:");
             w.printf("%-24s%-24s%-17s\n", "CARD", "TYPE", "COST");
             w.printf("%-24s%-24s%-17s\n", "----", "----", "----");
-            double wongCost = 0;
             for(Card c : wongCards) {
                 w.printf("%-24s%-24s$%-16.2f\n", c.getName(), c.getType(), c.getCost());
-                wongCost += c.getCost();
+                totalCost += c.getCost();
             }
             w.println("-----------------------------------------------------------------");
-            w.printf("%-48s$%-16.2f\n\n", "FINAL COST", wongCost);
-            if(cards>0) {
-                w.printf("You still need to sell %s for $%.2f\n", (cards==1 ? "1 card" : cards + " cards"), leftoverCardCost);
-                w.printf("The most expensive card you are selling is %s for $%.2f\n", "", maxCost);
+            w.printf("%-48s$%-16.2f\n\n", "FINAL COST", totalCost);
+            if(leftoverCards >0) {
+                w.printf("You still need to sell %s for $%.2f\n", (leftoverCards ==1 ? "1 card" : leftoverCards + " cards"), leftoverCardCost);
+                w.printf("The most expensive card you are selling is %s for $%.2f\n", "", highestCost);
             }
             w.close();
         } catch (IOException e) {
