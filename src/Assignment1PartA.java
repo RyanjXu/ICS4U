@@ -68,7 +68,7 @@ public class Assignment1PartA {
     public static void main(String[] args) {
         Scanner s  = new Scanner(System.in);
         System.out.println("Bye Bye My Pokemon Cards\n");
-        ArrayList<Card> wongCards = new ArrayList<Card>();
+        ArrayList<Card> wongCards = new ArrayList<>();
 
         boolean on = true;
         int cards = 0;
