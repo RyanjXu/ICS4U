@@ -23,30 +23,68 @@ class Card {
 
 public class Assignment1PartA {
 
+    public static String getType(Scanner s) {
+        Set<String> types = new HashSet<>(Set.of("grass", "fire","water", "poison", "fairy", "psychic", "ghost", "dark", "other"));
+        String type = s.nextLine();
+        if (types.contains(type.toLowerCase().strip())) {
+            return type;
+        } else {
+            System.out.print("\tINVALID. Please enter the energy type of the Pokemon: ");
+            return getType(s);
+        }
+    }
+
+    public static double getCost(Scanner s) {
+        if(s.hasNextDouble()) {
+            double cost = s.nextDouble();
+            s.nextLine();
+            if(cost>=0) {
+                return cost;
+            } else {
+                System.out.print("\tINVALID. Please enter the amount for this card: $");
+                s.next();
+                return getCost(s);
+            }
+        } else {
+            System.out.print("\tINVALID. Please enter the amount for this card: $");
+            s.next();
+            return getCost(s);
+        }
+    }
+
+    public static boolean getChoice(Scanner s, String prompt) {
+        String choice = s.nextLine();
+        if(choice.equals("y") || choice.equals("Y")) {
+            return true;
+        } else if(choice.equals("n") || choice.equals("N")) {
+            return false;
+        } else {
+            System.out.println(choice);
+            System.out.printf("\tINVALID! %s", prompt);
+            return getChoice(s, prompt);
+        }
+    }
 
     public static void main(String[] args) {
         Scanner s  = new Scanner(System.in);
-
         System.out.println("Bye Bye My Pokemon Cards\n");
         ArrayList<Card> wongCards = new ArrayList<Card>();
 
-        char choice = 'y';
+        boolean on = true;
         int cards = 0;
         int cnt = 0;
         double leftoverCardCost = 0;
         double maxCost = 0;
         String mostExpensiveName = null;
-        while(choice!='n') {
+        while(on) {
             System.out.printf("Please enter the name of card #%d: ", ++cnt);
             String name = s.nextLine();
             System.out.print("Please enter the energy type of the Pokemon: ");
-            String type = s.nextLine();
+            String type = getType(s);
             System.out.print("Please enter the amount for this card: $");
-            double cost = Double.parseDouble(s.nextLine());
-
+            double cost = getCost(s);
             System.out.printf("Will Ms. Wong buy this $%.2f card? (y/n): ", cost);
-            choice = s.nextLine().charAt(0);
-            if(choice == 'y') {
+            if(getChoice(s, String.format("Will Ms. Wong buy this $%.2f card? (y/n): ", cost))) {
                 wongCards.add(new Card(name, type, cost));
             } else {
                 cards++;
@@ -54,9 +92,8 @@ public class Assignment1PartA {
                 maxCost = Math.max(maxCost, cost);
                 mostExpensiveName = (maxCost==cost ? name : mostExpensiveName);
             }
-
             System.out.print("Are you selling anymore cards? (y/n): ");
-            choice = s.nextLine().charAt(0);
+            on=getChoice(s, "Are you selling anymore cards? (y/n): ");
         }
 
 
