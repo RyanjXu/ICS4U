@@ -62,7 +62,7 @@ public class Assignment1PartA {
         if(s.hasNextDouble()) { // user inputted a double
             double cost = s.nextDouble();
             s.nextLine();
-            if(cost>=0) { // valid input
+            if(cost>0) { // valid input
                 return cost;
             } else { // user's cost is negative
                 System.out.print("\tINVALID. ");
@@ -93,8 +93,11 @@ public class Assignment1PartA {
             return getChoice(s, prompt);
         }
     }
-
-    public static void main(String[] args) { //main method
+    /**
+     * Main method to execute the program.
+     * @param args Command-line arguments (not used).
+     */
+    public static void main(String[] args) {
         //variable initialization
         Scanner s  = new Scanner(System.in);
         ArrayList<Card> wongCards = new ArrayList<>(); // container to store cards that Ms.Wong bought
@@ -112,17 +115,17 @@ public class Assignment1PartA {
             String name = getName(s, ++numCards);
             String type = getType(s);
             double cost = getCost(s);
+            highestCost = Math.max(highestCost, cost);
+            mostExpensiveName = (highestCost==cost ? name : mostExpensiveName);
             if(getChoice(s, String.format("Will Ms. Wong buy this $%.2f card? (y/n): ", cost))) { //wong is buying store in arrayList
                 wongCards.add(new Card(name, type, cost));
             } else { //wong not buying, add to total cost, store largest cost.
                 leftoverCards++;
                 leftoverCardCost+=cost;
-                highestCost = Math.max(highestCost, cost);
-                mostExpensiveName = (highestCost==cost ? name : mostExpensiveName);
             }
             on=getChoice(s, "Are you selling anymore cards? (y/n): ");
         }
-        
+
         //print
         try {
             PrintWriter w = new PrintWriter(new FileWriter("receipt.txt"), true);
