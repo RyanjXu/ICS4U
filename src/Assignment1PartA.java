@@ -5,32 +5,22 @@ import java.io.*;
  * Name: Ryan Xu
  * Date: February 12th, 2025
  * Description:
- *  Terminal app to sell Pokémon cards
+ * This terminal application facilitates the selling of Pokémon cards.
+ * Users input card details, and the program determines whether a buyer (Ms. Wong) purchases them.
+ * A receipt summarizing purchases and remaining unsold cards is generated.
  */
-class Card {
-    public String name;
-    public String type;
-    public double cost;
-    public Card(String name, String type, double cost) { // constructor
-        this.name = name;
-        this.type = type;
-        this.cost = cost;
-    }
-    // utility methods
-    public String getName() {
-        return name;
-    }
-    public String getType() {
-        return type;
-    }
-    public double getCost() {
-        return cost;
+
+// Simple record class to store the cards
+record Card(String name, String type, double cost) {
+    public Card {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(type);
     }
 }
 
 public class Assignment1PartA {
     /**
-     * method to grab the card name
+     * Method to grab the card name
      * @param s passing scanner
      * @param numCards number of cards
      * @return valid string for the name of the card
@@ -46,7 +36,7 @@ public class Assignment1PartA {
         }
     }
     /**
-     * method to grab the card type
+     * Method to grab the card type
      * @param s passing scanner
      * @return valid type as a string
      */
@@ -63,7 +53,7 @@ public class Assignment1PartA {
     }
 
     /**
-     * method to grab the cost of the cards
+     * Method to grab the cost of the cards
      * @param s scanner
      * @return valid non-negative cost of the card as a double
      */
@@ -86,7 +76,7 @@ public class Assignment1PartA {
     }
 
     /**
-     * method to grab the users response to (y/n) choice
+     * Method to grab the users response to (y/n) choice
      * @param s passing scanner
      * @param prompt original prompt of the question
      * @return boolean indicating user's choice
@@ -132,22 +122,21 @@ public class Assignment1PartA {
             }
             on=getChoice(s, "Are you selling anymore cards? (y/n): ");
         }
-
-
+        
         //print
         try {
             PrintWriter w = new PrintWriter(new FileWriter("receipt.txt"), true);
             w.println("Summary of Ms.Wong's purchases:");
             w.printf("%-24s%-24s%-17s\n", "CARD", "TYPE", "COST");
             w.printf("%-24s%-24s%-17s\n", "----", "----", "----");
-            for(Card c : wongCards) {
-                w.printf("%-24s%-24s$%-16.2f\n", c.getName(), c.getType(), c.getCost());
-                totalCost += c.getCost();
+            for(Card c : wongCards) { // for-each loop
+                w.printf("%-24s%-24s$%-16.2f\n", c.name(), c.type(), c.cost());
+                totalCost += c.cost();
             }
             w.println("-----------------------------------------------------------------");
             w.printf("%-48s$%-16.2f\n\n", "FINAL COST", totalCost);
             if(leftoverCards >0) {
-                w.printf("You still need to sell %s for $%.2f\n", (leftoverCards ==1 ? "1 card" : leftoverCards + " cards"), leftoverCardCost);
+                w.printf("You still need to sell %s for $%.2f\n", (leftoverCards ==1 ? "1 card" : leftoverCards + " cards"), leftoverCardCost); // grammar simplified with a ternary operator
                 w.printf("The most expensive card you are selling is %s for $%.2f\n", "", highestCost);
             }
             w.close();

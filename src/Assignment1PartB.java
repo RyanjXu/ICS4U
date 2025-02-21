@@ -3,63 +3,68 @@ import java.util.*;
  * Name: Ryan Xu
  * Date: February 12th, 2025
  * Description:
- *  Check if a number becomes a palindrome after performing n operations on the initial number without exceeding the long limit.
- *  If the number becomes a palindrome, output the palindrome and the number of steps required.
+ * This program checks if a number becomes a palindrome after performing a series of operations.
+ * Each operation involves adding the number to its reverse. If the number becomes a palindrome,
+ * the program outputs the palindrome and the number of steps taken. If the number exceeds the
+ * long limit, we assume the number does not become a palindrome.
  */
 
 public class Assignment1PartB {
     /**
-     * Utility method to reverse a number
-     * @param n number being reversed
-     * @return reversed number
+     * Utility method to reverse a number.
+     * @param n Number being reversed.
+     * @return Reversed number.
      */
     public static long reverse(long n) {
-        long res= 0;
-        while(n!=0) {
-            res=res*10+n%10;
-            n/=10;
+        long res = 0;
+        while (n != 0) {
+            res = res * 10 + n % 10;
+            n /= 10;
         }
         return res;
     }
 
     /**
-     * Recursive method that checks if the number becomes a palindrome
-     * @param n initial number
-     * @param steps number of operations performed on the number
+     * Recursive method that checks if the number becomes a palindrome through successive operations.
+     * @param n Initial number.
+     * @param steps Number of operations performed on the number.
      */
     public static void search(long n, int steps) {
-        long rev = reverse(n); //store the reversed number once
-        if(n==rev) { //n is a palindrome
-            System.out.printf(" becomes the palindrome %d after %d steps\n", n, steps);
+        long rev = reverse(n); // Store the reversed number once to avoid redundant calculations.
+        if (n == rev) { // Check if n is a palindrome.
+            System.out.printf("%d becomes the palindrome %d after %d steps\n", n, n, steps);
             return;
         }
-        if(n > Long.MAX_VALUE-rev) { //n does not become a palindrome before exceeding the long limit
-            System.out.println(" does not become a palindrome");
+        if (n > Long.MAX_VALUE - rev) { // Check if our number overflows after the current operation
+            System.out.println(n + " does not become a palindrome due to exceeding the long limit");
             return;
         }
-        search(n + rev, ++steps); //n is not a palindrome, perform our operations and check again
+        search(n + rev, steps + 1); // Perform the operation and recurse.
     }
 
-    public static void main(String[] args) { //main method
+    /**
+     * Main method to take user input and process numbers to check for palindrome transformation.
+     * @param args Command-line arguments (not used).
+     */
+    public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        while(true) {
+        while (true) {
             System.out.print("Please input a starting number (0 to quit): ");
-            if(s.hasNextLong()) {
+            if (s.hasNextLong()) {
                 long n = s.nextLong();
-                if(n==0) { //quit
+                if (n == 0) { // Quit condition.
                     break;
-                } else if(n>0) { //valid input
-                    System.out.print(n);
+                } else if (n > 0) { // Valid input.
                     search(n, 0);
-                } else { //negative number
+                } else { // Negative number case.
                     System.out.println("Invalid input. Please enter a positive integer.");
                 }
-            } else { //invalid input
+            } else { // Handle invalid input.
                 System.out.println("Invalid input. Please enter a positive integer.");
-                s.next(); //clear whatever was inputted
+                s.next(); // Clear incorrect input.
             }
         }
-        System.out.println("Program is complete");
+        System.out.println("Program is complete.");
         s.close();
     }
 }
