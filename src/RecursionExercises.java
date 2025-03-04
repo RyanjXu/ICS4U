@@ -52,11 +52,16 @@ public class RecursionExercises {
         }
         return numStr.charAt(0) + commas(Integer.parseInt(numStr.substring(1)));
     }
-    public static int sumArray(int[] arr, int n) {
+    public static int sumArray(String[] arr, int n) {
         if(n==arr.length) {
             return 0;
         }
-        return Math.abs(arr[n])*n + sumArray(arr,n+1);
+        try {
+            int val = Integer.parseInt(arr[n]);
+            return Math.abs(val)*n + sumArray(arr,n+1);
+        } catch(NumberFormatException e) {
+            return sumArray(arr, n+1);
+        }
     }
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
@@ -112,7 +117,7 @@ public class RecursionExercises {
                     System.out.println(commas(abs));
                     break;
                 case 7:
-                    int[] arr = {3, -2, 10, 0 , 0, -8};
+                    String[] arr = {"12", "-2", "10", "3.2", "haha", "-8"};
                     System.out.println(sumArray(arr, 0));
                     break;
                 case 8:
