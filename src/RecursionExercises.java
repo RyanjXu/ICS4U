@@ -31,13 +31,16 @@ public class RecursionExercises {
         return dig*(int) Math.pow(base, line.length()-1) + convert(line.substring(1), base);
     }
     public static String removeDup(String line) {
-        if(line.isEmpty()) {
-            return "";
+        if(!Character.isLetter(line.charAt(0))) {
+            return removeDup(line.substring(1));
         }
-        if(line.length()>1 && Character.toLowerCase(line.charAt(0))==Character.toLowerCase(line.charAt(1))) {
-            return line.charAt(0)+removeDup(line.substring(2));
+        if(line.length()==2) {
+            return line.charAt(0)!=line.charAt(1)?line:line.substring(0,1);
         }
-        return line.charAt(0)+removeDup(line.substring(1));
+        if(!Character.isLetter(line.charAt(1))) {
+            return removeDup(line.charAt(0) + line.substring(2));
+        }
+        return line.charAt(0)+ (Character.toLowerCase(line.charAt(0))!=Character.toLowerCase(line.charAt(1))?removeDup(line.substring(1)):removeDup(line.substring(2)));
     }
     private static String commas(int num) {
         String numStr = Integer.toString(num);
@@ -63,7 +66,7 @@ public class RecursionExercises {
             switch(Integer.parseInt(s.nextLine())){
                 case 1:
                     System.out.println("Please enter the number of students you choose: ");
-                    int choice = s.nextInt();
+                    int choice = Integer.parseInt(s.nextLine());
                     if(choice<=0) {
                         System.out.println("Please enter a positive integer!");
                     } else {
@@ -73,10 +76,10 @@ public class RecursionExercises {
                 case 2:
                     System.out.println("Please enter the numerator and denominator seperated by a space: ");
                     int numerator = s.nextInt();
-                    int denominator = s.nextInt();
+                    int denominator = Integer.parseInt(s.nextLine());
                     while(denominator ==0) {
                         System.out.println("Denominator cannot be zero! Please enter another integer: ");
-                        denominator = s.nextInt();
+                        denominator = Integer.parseInt(s.nextLine());
                     }
                     System.out.println ( (((numerator <0)^(denominator <0)) ? "-" : "") + divide(Math.abs(numerator), Math.abs(denominator)));
                     break;
@@ -88,10 +91,10 @@ public class RecursionExercises {
                 case 4:
                     System.out.println("Please enter the number and base you would like to convert: ");
                     String line = s.nextLine().strip();
-                    int base = s.nextInt();
+                    int base = Integer.parseInt(s.nextLine());
                     while(base<1) {
                         System.out.println("Base must be positive! Please try again: ");
-                        base = s.nextInt();
+                        base = Integer.parseInt(s.nextLine());
                     }
                     System.out.println((line.charAt(0)=='-') ? "-" + convert(line.substring(1), base)  : convert(line, base) );
                     break;
@@ -102,7 +105,7 @@ public class RecursionExercises {
                     break;
                 case 6:
                     System.out.println("Please enter the number you would like to format: ");
-                    int num = s.nextInt();
+                    int num = Integer.parseInt(s.nextLine());
                     int abs = Math.abs(num);
                     System.out.print(((num<0)?"-":"+"));
                     System.out.print(Integer.toString(abs).length()%3==1 ? "00" : (Integer.toString(abs).length()%3==2 ? "0" : "") );
