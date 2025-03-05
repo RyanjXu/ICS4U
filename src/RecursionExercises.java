@@ -71,11 +71,11 @@ public class RecursionExercises {
                 case 1:
                     System.out.println("Please enter the number of students you choose: ");
                     int choice = Integer.parseInt(s.nextLine());
-                    if(choice<=0) {
+                    while (choice<=0) {
                         System.out.println("Please enter a positive integer!");
-                    } else {
-                        System.out.printf("Ms. Wong's cat will get %d treats\n", treats(choice));
+                        choice = Integer.parseInt(s.nextLine());
                     }
+                    System.out.printf("Ms. Wong's cat will get %d treats\n", treats(choice));
                     break;
                 case 2:
                     System.out.println("Please enter the numerator and denominator seperated by a space: ");
