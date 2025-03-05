@@ -5,11 +5,11 @@ public class RecursionExercises {
         if(n==1) {
             return 5;
         }
-        return (n%2==0 ? 3 : 5) - (n%11==0 ? 1 : 0) + treats(n-1);
+        return (n%11==0 ? -1 : (n%2==0 ? 3 : 5)) + treats(n-1);
     }
     public static int divide(int n, int d) {
         if(n<d) {
-            return (int) Math.round((double) n/d);
+            return  (2*n>=d ? 1 : 0);
         }
         return 1+divide(n-d, d);
     }
@@ -65,8 +65,7 @@ public class RecursionExercises {
     }
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        boolean on = true;
-        while(on) {
+        while(true) {
             System.out.println("Please choose which exercise you would like to run (1-7), 8 to exit: ");
             switch(Integer.parseInt(s.nextLine())){
                 case 1:
@@ -75,13 +74,14 @@ public class RecursionExercises {
                     if(choice<=0) {
                         System.out.println("Please enter a positive integer!");
                     } else {
-                        System.out.printf("Ms.Wong's cat will get %d treats\n", treats(choice));
+                        System.out.printf("Ms. Wong's cat will get %d treats\n", treats(choice));
                     }
                     break;
                 case 2:
                     System.out.println("Please enter the numerator and denominator seperated by a space: ");
                     int numerator = s.nextInt();
-                    int denominator = Integer.parseInt(s.nextLine());
+                    int denominator = s.nextInt();
+                    s.nextLine();
                     while(denominator ==0) {
                         System.out.println("Denominator cannot be zero! Please enter another integer: ");
                         denominator = Integer.parseInt(s.nextLine());
@@ -121,14 +121,14 @@ public class RecursionExercises {
                     System.out.println(sumArray(arr, 0));
                     break;
                 case 8:
-                    on = false;
-                    break;
+                    System.out.println("Thanks for using my program!");
+                    s.close();
+                    System.exit(0);
                 default:
                     System.out.println("Invalid choice!");
                     break;
             }
         }
-        s.close();
     }
 
 
