@@ -21,10 +21,10 @@ public class Assignment3 {
     public static void printTypes(String type, ArrayList<SwitchGame> games) {
         for(SwitchGame game : games) {
             if(game.type.equalsIgnoreCase(type)) {
-                System.out.println(game.toString());
+                System.out.println(game);
             }
         }
-    }
+    } 
     public static void main(String[] args) throws IOException {
         Scanner s = new Scanner(new File("input.txt"));
         ArrayList<SwitchGame> games = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Assignment3 {
             } else if(types.contains(choice.toLowerCase())) {
                 printTypes(choice, games);
             } else if(binarySearch(games, choice) >= 0) {
-                System.out.println(games.get(binarySearch(games, choice)).toString());
+                System.out.println(games.get(binarySearch(games, choice)));
             } else {
                 System.out.println("Invalid Choice! (name/type does not exist)");
             }

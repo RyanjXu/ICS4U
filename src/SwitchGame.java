@@ -18,6 +18,7 @@ public class SwitchGame implements Comparable<SwitchGame> {
     public String toString() {
         return String.format("Name: %s%nType: %s%nRating: %.2f", name, type, rating);
     }
+
     public int compareTo(SwitchGame o) {
         return this.name.compareTo(o.name);
     }
