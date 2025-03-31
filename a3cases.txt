@@ -23,3 +23,16 @@ Mario Party Party
 5.75 Overcooked Simulation
 8.10 Hades Roguelike
 4.95 Pac-Man Classic
+8.75 Halo Shooter
+7.90 DOOM Shooter
+9.05 Apex Legends Shooter
+6.30 Warframe Shooter
+8.85 Stardew Valley Simulation
+7.60 The Sims Simulation
+9.20 Cities: Skylines Simulation
+8.00 RollerCoaster Tycoon Simulation
+9.40 Dark Souls RPG
+8.70 Elden Ring RPG
+7.95 Bloodborne RPG
+6.80 Dragon's Dogma RPG
+

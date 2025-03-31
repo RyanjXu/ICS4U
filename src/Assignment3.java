@@ -1,6 +1,12 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Name: Ryan Xu
+ * Date: March 30th, 2025
+ * Description:
+ * Terminal app that stores switch games read from a file
+ */
 public class Assignment3 {
     /**
      * Modified binary search that finds the first index of what we're looking for.
@@ -44,7 +50,7 @@ public class Assignment3 {
             String line = s.nextLine();
             String[] words = line.split(" ");
             try {
-                if (words.length < 3) {
+                if (words.length < 3) { // invalid line
                     throw new NumberFormatException();
                 }
 
@@ -53,6 +59,7 @@ public class Assignment3 {
                 String name = String.join(" ", Arrays.copyOfRange(words, 1, words.length - 1));
                 String type = words[words.length - 1];
 
+                // Add it into each of the three lists
                 SwitchGame cur = new SwitchGame(rating, name, type);
                 gamesByName.add(cur);
                 gamesByType.add(cur);
@@ -79,7 +86,7 @@ public class Assignment3 {
             System.out.print("\nRyan's Switch Game Indexer\n1. Exit\n2. Search by name\n3. Search by type\nPlease enter your choice: ");
             try {
                 int choice = Integer.parseInt(s.nextLine());
-                if (choice == 1) {
+                if (choice == 1) { // exit
                     System.out.println("Thanks for using my program!");
                     System.exit(0);
 
@@ -93,10 +100,10 @@ public class Assignment3 {
                         continue;
                     }
 
-                    for (int i = start; i < gamesByName.size(); i++) {
+                    for (int i = start; i < gamesByName.size(); i++) { // since games are stored by name, print all games with the same name
                         SwitchGame g = gamesByName.get(i);
 
-                        if (!g.getName().equalsIgnoreCase(name)) {
+                        if (!g.getName().equalsIgnoreCase(name)) { // break at the first different name
                             break;
                         }
 
@@ -112,18 +119,47 @@ public class Assignment3 {
                     String type = s.nextLine().strip();
                     int start = binarySearch(gamesByType, type, false);
 
-                    if (start == -1) {
+                    if (start == -1) { // type not found
                         System.out.println("Game type not found.");
                         continue;
                     }
-
-                    for (int i = start; i < gamesByType.size(); i++) {  // Iterate over gamesByType
+                    ArrayList<SwitchGame> gamesOfType = new ArrayList<>();
+                    for (int i = start; i < gamesByType.size(); i++) { // store all games of the type provided by the user.
                         SwitchGame g = gamesByType.get(i);
-
                         if (!g.getType().equalsIgnoreCase(type)) {
                             break;
                         }
+                        gamesOfType.add(g);
+                    }
 
+                    // Used a set here to check that names/ratings are the same for efficiency. This could be done with an ArrayList and checking if each
+                    // title/rating is already contained within the list. But that's very inefficient
+                    Set<String> names = new HashSet<>();
+                    Set<Double> ratings = new HashSet<>();
+                    for(SwitchGame g : gamesOfType) {
+                        names.add(g.getName());
+                        ratings.add(g.getRating());
+                    }
+                    if (names.size()==1) {
+                        System.out.println("All titles are the same. Sorting by rating:");
+                        Collections.sort(gamesOfType, new sortByRating()); // sort to print
+                    } else if (ratings.size()==1) {
+                        System.out.println("All ratings are the same. Sorting by name:");
+                        Collections.sort(gamesOfType); // sort to print
+                    } else {
+                        // Ask user for sorting choice
+                        System.out.print("How would you like it to be sorted? (name/rating): ");
+                        String sortChoice = s.nextLine().strip().toLowerCase();
+                        if (sortChoice.equals("name")) {
+                            Collections.sort(gamesOfType); // sort to print
+                        } else if (sortChoice.equals("rating")) {
+                            Collections.sort(gamesOfType, new sortByRating()); // sort to print
+                        } else {
+                            System.out.println("Invalid choice. Sorting by name by default.");
+                            Collections.sort(gamesOfType);
+                        }
+                    }
+                    for (SwitchGame g : gamesOfType) {  // Print games
                         System.out.println(g);
 
                         // Print the ranking
@@ -131,7 +167,7 @@ public class Assignment3 {
                         System.out.printf("Ranking: %d out of %d\n", rank, gamesByRating.size());
                     }
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e) { // error catching
                 System.out.println("Invalid Input!");
             }
         }
