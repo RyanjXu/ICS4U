@@ -1,3 +1,5 @@
+package assignment3;
+
 import java.util.*;
 import java.io.*;
 
@@ -48,7 +50,7 @@ public class Assignment3 {
                     throw new NumberFormatException();
                 }
 
-                // Parsing and creating the SwitchGame object
+                // Parsing and creating the assignment3.SwitchGame object
                 double rating = Double.parseDouble(words[0]);
                 String name = String.join(" ", Arrays.copyOfRange(words, 1, words.length - 1));
                 String type = words[words.length - 1];
@@ -70,7 +72,7 @@ public class Assignment3 {
         s.close();
         s = new Scanner(System.in);
 
-//        for(SwitchGame game: gamesByType) { debugging code
+//        for(assignment3.SwitchGame game: gamesByType) { debugging code
 //            System.out.println(game);
 //        }
 

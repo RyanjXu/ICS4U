@@ -1,3 +1,5 @@
+package assignment3;
+
 import java.util.Comparator;
 
 class sortByType implements Comparator<SwitchGame> {
