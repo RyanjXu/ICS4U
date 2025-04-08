@@ -7,11 +7,13 @@ public class Episode implements Comparable<Episode> {
     private final int episodeNumber;
     private boolean watched = false;
     private final Time length;
+    private final Season parent;
 
-    public Episode(String title, int episodeNumber, Time length) { // Constructor
+    public Episode(String title, int episodeNumber, Time length, Season parent) { // Constructor
         this.title = title;
         this.episodeNumber = episodeNumber;
         this.length = length;
+        this.parent = parent;
     }
     // getters
     public Time getLength() {
@@ -22,7 +24,10 @@ public class Episode implements Comparable<Episode> {
     }
 
     public void watch() {
-        this.watched = true;
+        if(!watched) {
+            this.watched=true;
+            parent.watch();
+        }
     }
     @Override
     public String toString() {
