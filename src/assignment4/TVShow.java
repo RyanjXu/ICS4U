@@ -14,6 +14,15 @@ public class TVShow {
         this.genre = genre;
         TVShowCount++;
     }
+    public int getSize() {
+        return seasons.size();
+    }
+    public String getName() {
+        return name;
+    }
+    public Season getSeason(int idx) {
+        return seasons.get(idx);
+    }
 
     public void add(Season season) {
         seasons.add(season);
@@ -25,6 +34,20 @@ public class TVShow {
     }
     public void watchSeason() {
         seasonsWatched++;
+    }
+    public void printSeasons() {
+        for(int i =1 ; i<=seasons.size(); i++) {
+            System.out.printf("%d. Season %d\n", i, seasons.get(i-1).getSeasonNumber());
+        }
+    }
+    public void removeSeason(int idx) {
+        Season s = seasons.get(idx);
+        if(s.isWatched()) {
+            seasonsWatched--;
+        }
+        episodesUnwatched-=s.getSize()-s.getWatchedEpisodes();
+        length.subtract(s.getLength());
+        seasons.remove(idx);
     }
     public void displayStatus() {
         for(Season season : seasons) {

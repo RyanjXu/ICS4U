@@ -31,6 +31,22 @@ public class Time implements Comparable<Time> {
         this.minute = minutesSum%60;
         this.hour = hoursSum;
     }
+    public void subtract(Time time) {
+        int totalThis = this.hour * 3600 + this.minute * 60 + this.second;
+        int totalOther = time.hour * 3600 + time.minute * 60 + time.second;
+        int diff = totalThis - totalOther;
+        if (diff < 0) {
+            // Clamp to 0 if the result is negative (optional behavior)
+            this.hour = 0;
+            this.minute = 0;
+            this.second = 0;
+            return;
+        }
+        this.hour = diff / 3600;
+        diff %= 3600;
+        this.minute = diff / 60;
+        this.second = diff % 60;
+    }
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true; // same reference

@@ -3,7 +3,7 @@ package assignment4;
 import java.util.*;
 
 public class Season {
-    private int seasonNumber;
+    private final int seasonNumber;
     private final ArrayList<Episode> episodes = new ArrayList<>();
     private final Time length = new Time();
     private final TVShow parent;
@@ -22,6 +22,15 @@ public class Season {
     }
     public int getWatchedEpisodes() {
         return this.watchedEpisodes;
+    }
+    public boolean isWatched() {
+        return this.watched;
+    }
+    public int getSeasonNumber() {
+        return this.seasonNumber;
+    }
+    public Episode getEpisode(int idx) {
+        return this.episodes.get(idx);
     }
 
     public void add(Episode episode) {
@@ -47,8 +56,9 @@ public class Season {
         Collections.sort(this.episodes, Episode.BY_TITLE);
     }
     public void displayEpisodeTitles() {
+        int i = 1;
         for (Episode episode : episodes) {
-            System.out.println(episode.getTitle());
+            System.out.printf("%d. %s\n", i++, episode.getTitle());
         }
     }
 
